@@ -1,0 +1,78 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<FileModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<style>
+
+    .wholepage{
+        background: url(https://img.freepik.com/free-vector/polygonal-background_53876-60251.jpg?w=740&t=st=1695989992~exp=1695990592~hmac=6208d6f03418c38c384e4e6fb26146bd47057900435329575dce7a3e076991fb);
+        background-repeat:no-repeat;
+        background-size:cover;
+    }
+    td, th {
+        border: 2px solid black;
+        text-align: left;
+        padding: 8px;
+    }
+
+    .uploadplace{
+        background-color:white;
+        height:50px;
+        width:350px;
+        position: absolute;
+        top: 10%;
+        left: 37%;
+        display:flex;
+    }
+
+</style>
+<body class="wholepage">
+    <h2 style="text-align:center">File Action Center</h2>
+    <div class="uploadplace">
+        <form asp-action="Index" asp-controller="Home" method="post" enctype="multipart/form-data" style="display: flex;justify-content: center;">
+            <span>Select File:</span>
+            <input type="file" name="postedFiles" id="fileInput" onchange="return fileValidation()"/ multiple />
+            <input type="submit" id="upload" value="Upload" />
+        </form>
+    </div>
+
+    <br />
+    <table style=" display: flex;justify-content: center;position:absolute;top:20%;left:34%">
+        <tr>
+            <th>Name</th>
+            <th>Download</th>
+            <th>Delete</th>
+        </tr>
+        @foreach (FileModel file in Model)
+        {
+            <tr>
+                <td>@file.Name</td>
+                <td><a href='@Url.Action("DownloadFile","Home", new { fileId = file.Id })'>Download</a></td>
+                <td><a href='@Url.Action("DeleteFile","Home", new { fileId = file.Id })'>Delete</a></td>
+            </tr>
+        }
+        
+    </table>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <script type="text/javascript">
+            alert("@ViewBag.Message");
+        </script>
+    } 
+   
+
+
+</body>
+</html>
